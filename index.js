@@ -7,11 +7,11 @@ const context = canvas.getContext('2d')
 
 const bg = new Image()
 const baloon = new Image()
-const pointer = new Image()
+
 
 baloon.src = 'img/baloon.png'
 bg.src = 'img/background.png'
-pointer.src = 'img/pointer.png'
+
 
 const baloonSpeed = {
   x: 300,
@@ -25,6 +25,8 @@ let isAnimate = true
 
 bg.onload = function() {
   render()
+  drawClock()
+  rotatePointer()
   btn.addEventListener('click', function() {
     isAnimate = true
     game()
@@ -36,6 +38,7 @@ bg.onload = function() {
 function game() {
   update()
   render()
+  rotatePointer()
   if(isAnimate) {
     requestAnimFrame(game)
   }
@@ -61,12 +64,10 @@ function update() {
 function render() {
   context.drawImage(bg,0,0)
   context.drawImage(baloon, baloonSpeed.x, baloonSpeed.y, 63, 109)
-  context.drawImage(pointer, 140, 100)
   distance.innerHTML = startHeight + ' м'
-
 }
 
-var requestAnimFrame = (function() {
+const requestAnimFrame = (function() {
   return window.requestAnimationFrame ||
          window.webkitRequestAnimationFrame ||
          window.mozRequestAnimationFrame ||
@@ -77,6 +78,29 @@ var requestAnimFrame = (function() {
         }
 })()
 
+function drawClock() {
+  context.beginPath();
+  context.arc(165, 70, 30, 0, Math.PI * 2);
+  context.closePath();
+  context.lineWidth = 3;
+  context.stroke();
+  context.fillStyle = "ivory";
+  context.fill();
+  context.fillStyle = "black";
+  context.fillText("12", 160, 53);
+}
+
+function rotatePointer() {
+ const d = new Date();
+ const radianAngle = (d.getSeconds() / 60) * Math.PI * 2;
+  context.save();
+  context.translate(163, 70);
+  context.rotate(radianAngle);
+  context.moveTo(0, 0);
+  context.lineTo(22, 0);
+  context.stroke();
+  context.restore();
+}
 
 
 
