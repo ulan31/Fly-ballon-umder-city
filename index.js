@@ -31,8 +31,6 @@ bg.onload = function() {
     isAnimate = true
     game()
   })
-
-
 }
 
 function game() {
@@ -41,6 +39,7 @@ function game() {
   rotatePointer()
   if(isAnimate) {
     requestAnimFrame(game)
+    rotatePointer()
   }
 
 }
@@ -62,6 +61,7 @@ function update() {
 }
 
 function render() {
+  rotatePointer()
   context.drawImage(bg,0,0)
   context.drawImage(baloon, baloonSpeed.x, baloonSpeed.y, 63, 109)
   distance.innerHTML = startHeight + ' м'
@@ -87,10 +87,9 @@ function drawClock() {
   context.fillStyle = "ivory";
   context.fill();
   context.fillStyle = "black";
-  context.fillText("12", 160, 53);
 }
 
-function rotatePointer() {
+function rotatePointer(x) {
  const d = new Date();
  const radianAngle = (d.getSeconds() / 60) * Math.PI * 2;
   context.save();
